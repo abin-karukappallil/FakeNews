@@ -48,6 +48,7 @@ export default function LoginPage() {
 
             router.push("/");
         } catch (e) {
+          void e;
             toast.error("Something went wrong. Please try again.", {
                 richColors: true,
             });
@@ -101,7 +102,7 @@ export default function LoginPage() {
                         </form>
                     </div>
                     <p className="px-8 text-center text-sm text-muted-foreground">
-                        Don't have an account?{" "}
+                        Dont have an account?{" "}
                         <Link href="/auth/signup" className="underline underline-offset-4 hover:text-primary">
                             Sign up
                         </Link>
