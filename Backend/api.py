@@ -20,11 +20,24 @@ app.add_middleware(
 
 class url(BaseModel):
     url: str
+TRUSTED_SITES = [
+    "timesofindia.indiatimes.com",
+    "thehindu.com",
+    "bbc.com",
+    "cnn.com",
+    "reuters.com",
+    "theguardian.com",
+    "nytimes.com",
+    "washingtonpost.com",
+    "aljazeera.com"
+]
 
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
 
+def is_trusted_source(url):
+    return any(site in url for site in TRUSTED_SITES)
 @app.post("/check")
 async def verifyNews(usrr: url):
     def getNews(url):
@@ -34,7 +47,11 @@ async def verifyNews(usrr: url):
 
     STREAM_SEARCH_URL = os.getenv("STREAM_SEARCH_URL")
     GROQ_API_KEY = os.getenv("GROQ_API_KEY")
-
+    if is_trusted_source(usrr.url):
+        return {
+            "rating": 9,  
+            "link": usrr.url
+        }
     if "https://" in usrr.url:
         news = getNews(usrr.url)
     else:
@@ -78,6 +95,6 @@ Only return the rating as an integer, without explanations or additional text.""
     )
 
     return {
-        "rating": chat_completion.choices[0].message.content.strip(),
+        "rating": chat_completion.choices[0].message.content.split("</think>")[1].strip(),
         "link": news
     }
