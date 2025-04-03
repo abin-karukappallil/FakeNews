@@ -26,7 +26,7 @@ export default function AnalyzerForm() {
     setIsLoading(true)
 
     try {
-      const res = await fetch("http://localhost:8000/check", {
+      const res = await fetch("https://fakenewsapi.abinthomas.dev/check", {
         method: "POST",
         headers: {
           "Content-type": "application/json",
