@@ -7,7 +7,8 @@ import { useState } from "react"
 import { toast } from "sonner"
 import Cookies from "js-cookie"
 import { useRouter } from "next/navigation"
-
+import {motion} from "motion/react"
+import { NewspaperIcon } from "lucide-react"
 export default function LoginPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -59,7 +60,24 @@ export default function LoginPage() {
 
     return (
             <div className="lg:p-8 flex mt-48 p-4 flex-col justify-center items-center my-auto">
+                 <motion.div 
+                                initial={{ x: -20, opacity: 0 }}
+                                animate={{ x: 0, opacity: 1 }}
+                                transition={{ delay: 0.2 }}
+                                className="flex mb-12 items-center gap-3"
+                              >
+                                <NewspaperIcon className="h-8 w-8 text-primary" />
+                                <div className="flex flex-col justify-center items-start">
+                                  <h1 className="text-4xl sm:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60">
+                                    NewsArchieve
+                                  </h1>
+                                  <p className="text-lg text-muted-foreground">
+                                    Analyze news articles for truthfulness
+                                  </p>
+                                </div>
+                              </motion.div>
                 <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
+                     
                     <div className="flex flex-col space-y-2 text-center">
                         <h1 className="text-2xl font-semibold tracking-tight">Welcome back</h1>
                         <p className="text-sm text-muted-foreground">Enter your email to sign in to your account</p>

@@ -6,7 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-
+import { motion} from "motion/react";
+import { NewspaperIcon } from "lucide-react";
 export default function SignUpPage() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -52,8 +53,24 @@ export default function SignUpPage() {
   };
 
   return (
-    <div className="container flex min-h-screen flex-col items-center justify-center">
-      <div className="w-full max-w-md space-y-6">
+    <div className=" flex min-h-screen flex-col items-center justify-center">
+       <motion.div 
+                                      initial={{ x: -20, opacity: 0 }}
+                                      animate={{ x: 0, opacity: 1 }}
+                                      transition={{ delay: 0.2 }}
+                                      className="flex items-center mb-20 gap-3"
+                                    >
+                                      <NewspaperIcon className="h-8 w-8 text-primary" />
+                                      <div className="flex flex-col justify-center items-start">
+                                        <h1 className="text-4xl sm:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60">
+                                          NewsArchieve
+                                        </h1>
+                                        <p className="text-lg text-muted-foreground">
+                                          Analyze news articles for truthfulness
+                                        </p>
+                                      </div>
+                                    </motion.div>
+      <div className="w-full max-w-md space-y-6 flex flex-col items-center justify-center p-6 bg-background rounded-lg shadow-md mx-auto">
         <h1 className="text-2xl font-semibold text-center">Create an account</h1>
         <form onSubmit={handleSignup} className="grid gap-4">
           <div className="grid grid-cols-2 gap-4">

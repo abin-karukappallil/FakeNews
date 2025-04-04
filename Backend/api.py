@@ -10,9 +10,14 @@ load_dotenv()
 
 app = FastAPI()
 
+origins = [
+    "http://localhost:3000",
+    "https://newsarchieve.abinthomas.dev",  
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[origins],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -29,7 +34,8 @@ TRUSTED_SITES = [
     "theguardian.com",
     "nytimes.com",
     "washingtonpost.com",
-    "aljazeera.com"
+    "aljazeera.com",
+    "indianexpress.com"
 ]
 
 @app.get("/")
