@@ -42,6 +42,29 @@ TRUSTED_SITES = [
 async def root():
     return {"message": "Hello World"}
 
+def headingExt(url):
+    response = requests.get(url)
+    soup = bs(response.text, 'html.parser')
+    heading = soup.find('h1').get_text(strip=True) if soup.find('h1') else "No heading found"
+    return heading
+def getImage(url, heading):
+    response = requests.get(url)
+    soup = bs(response.text, 'html.parser')
+    images = soup.find_all('img')
+
+    for img in images:
+        title = img.get('title') or ""  
+        alt = img.get('alt') or ""      
+        src = img.get('src') or ""      
+
+        if title.startswith(heading) or alt.startswith(heading) and not src.endswith(".svg"):
+            return src  
+
+    for img in images:
+        src = img.get('src') or ""
+        if src.startswith("https://images.") or src.startswith("https://cdn.") or src.startswith("https://static.") or src.startswith("https://") and not src.endswith(".svg") and not src.endswith(".png") and not src.startswith("https://www.facebook.com"):
+            print("Image found:", src)
+            return src  
 def is_trusted_source(url):
     return any(site in url for site in TRUSTED_SITES)
 @app.post("/check")
@@ -50,13 +73,16 @@ async def verifyNews(usrr: url):
         response = requests.get(url)
         soup = bs(response.text, 'html.parser')
         return soup.get_text(strip=True)
-
+    heading = headingExt(usrr.url)
     STREAM_SEARCH_URL = os.getenv("STREAM_SEARCH_URL")
     GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+    img = getImage(usrr.url,heading)
     if is_trusted_source(usrr.url):
         return {
+            "heading": heading,
             "rating": 9,  
-            "link": usrr.url
+            "link": usrr.url,
+            "image": img
         }
     if "https://" in usrr.url:
         news = getNews(usrr.url)
@@ -101,6 +127,8 @@ Only return the rating as an integer, without explanations or additional text.""
     )
 
     return {
+        "heading": heading,
         "rating": chat_completion.choices[0].message.content.split("</think>")[1].strip(),
-        "link": news
+        "link": usrr.url,
+        "image": img
     }

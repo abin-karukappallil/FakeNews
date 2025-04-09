@@ -19,7 +19,10 @@ const createSchema = async () => {
         CREATE TABLE IF NOT EXISTS FAKENEWS(
         ID SERIAL PRIMARY KEY,
         LINK TEXT UNIQUE NOT NULL,
-        RATING TEXT NOT NULL
+        RATING TEXT NOT NULL,
+        IMAGE TEXT,
+        HEADING TEXT NOT NULL,
+        CREATED_AT TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
       `
       ;

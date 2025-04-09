@@ -26,7 +26,7 @@ export default function AnalyzerForm() {
     setIsLoading(true)
 
     try {
-      const res = await fetch("https://fakenewsapi.abinthomas.dev/check", {
+      const res = await fetch("/api/check", {
         method: "POST",
         headers: {
           "Content-type": "application/json",
@@ -47,22 +47,6 @@ export default function AnalyzerForm() {
       setTruthScore(score)
       console.log(score)
       setResult(getTruthRating(score))
-
-      const addNewsRes = await fetch("/api/Add_news", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          link: inputType === "url" ? url : null,
-          rating: score,
-        }),
-      })
-
-      if (!addNewsRes.ok) {
-        toast.error("Failed to save the news data", { richColors: true })
-        return
-      }
       toast.success("Successfully analyzed and saved the content", { richColors: true })
     } catch (error) {
       console.error("Error analyzing content:", error)
@@ -147,10 +131,10 @@ export default function AnalyzerForm() {
         </div>
 
         {result && truthScore !== null && (
-          <div className="mt-6 p-4 bg-gray-200 rounded-md">
-            <p className="font-semibold">Truthfulness Rating:</p>
-            <p>{result}</p>
-            <p className="mt-2 text-sm text-gray-500">Score: {truthScore}/10</p>
+          <div className="mt-6 p-4 bg-slate-950/70 rounded-md">
+            <p className="font-semibold text-gray-200">Truthfulness Rating:</p>
+            <p className="text-gray-200">{result}</p>
+            <p className="mt-2 text-sm text-gray-400">Score: {truthScore}/10</p>
           </div>
         )}
       </CardContent>

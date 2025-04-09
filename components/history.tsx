@@ -7,11 +7,13 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { CheckCircle, AlertTriangle, XCircle, Search, ExternalLink } from "lucide-react"
 import { cn } from "@/lib/utils"
-
+import Image from "next/image"
 interface AnalysisResult {
   id: number
   link: string
+  heading:string
   rating: number
+  image?: string
 }
 
 export default function HistoryList() {
@@ -31,6 +33,8 @@ export default function HistoryList() {
           const formattedHistory = data.history.map((item: any) => ({
             id: item.id,
             link: item.link,
+            heading: item.heading,
+            image: item.image,
             rating: Number(item.rating),
           }))
           setHistory(formattedHistory)
@@ -100,12 +104,16 @@ export default function HistoryList() {
         <div className="space-y-4 w-full">
           {filteredHistory.map((item) => (
             <Card key={item.id} className="overflow-hidden">
+            
               <div className="flex flex-col sm:flex-row">
+              <Image className="p-2 ml-8" src={item.image || "/placeholder.png"} unoptimized height={30} width={160} alt=""/>
                 <div className="flex-1 p-4 sm:p-6">
                   <div className="flex items-start gap-3">
                     {getRatingIcon(item.rating)}
                     <div className="space-y-1 flex-1 min-w-0">
+                    <h1 className="text-xl font-semibold">{item.heading}</h1>
                       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                        
                         <h3 className="font-medium text-xs md:text-sm line-clamp-1 break-all">{item.link}</h3>
                         <span
                           className={cn(

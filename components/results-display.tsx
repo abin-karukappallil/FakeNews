@@ -9,6 +9,7 @@ interface AnalysisResult {
   id: string
   title: string
   content: string
+  image: string
   rating: number
   date: string
   type: "url" | "text"

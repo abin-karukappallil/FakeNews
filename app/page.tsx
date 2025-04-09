@@ -8,12 +8,18 @@ import { NewspaperIcon, LogOutIcon } from "lucide-react"
 import { motion } from "motion/react"
 import Cookies from "js-cookie"
 import { useTheme } from "next-themes"
+
 import { MoonIcon, SunIcon } from "lucide-react"
+import { useEffect, useState } from "react"
 
 export default function Home() {
   const router = useRouter()
   const { theme, setTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
 
+  useEffect(() => {
+    setMounted(true)
+  }, [])
   async function handleLogout() {
     await Cookies.remove("token")
     await Cookies.remove("userId")
@@ -21,7 +27,7 @@ export default function Home() {
   }
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
@@ -29,7 +35,7 @@ export default function Home() {
     >
       <header className="border-b w-full py-4 backdrop-blur-sm bg-background/80 sticky top-0 z-50">
         <div className="container mx-auto px-4 flex justify-between items-center">
-          <motion.div 
+          <motion.div
             initial={{ x: -20, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ delay: 0.2 }}
@@ -45,23 +51,26 @@ export default function Home() {
               </p>
             </div>
           </motion.div>
-          
+
           <div className="flex items-center gap-3">
+            {mounted && (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                className="rounded-full"
+              >
+                {theme === "dark" ? (
+                  <SunIcon className="h-5 w-5" />
+                ) : (
+                  <MoonIcon className="h-5 w-5" />
+                )}
+              </Button>
+            )}
+
             <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className="rounded-full"
-            >
-              {theme === "dark" ? (
-                <SunIcon className="h-5 w-5" />
-              ) : (
-                <MoonIcon className="h-5 w-5" />
-              )}
-            </Button>
-            <Button 
-              size="sm" 
-              onClick={handleLogout} 
+              size="sm"
+              onClick={handleLogout}
               variant="destructive"
               className="gap-2"
             >
