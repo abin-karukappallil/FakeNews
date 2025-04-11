@@ -2,7 +2,7 @@ import {NextResponse} from "next/server";
 import {db} from "@/lib/db"
 export async function GET() {
     try{
-       const history = await db`SELECT * FROM FAKENEWS`;
+       const history = await db`SELECT * FROM FAKENEWS ORDER BY ID DESC`;
        return NextResponse.json({status:200,history})
     }catch(e){
         console.log(e);
